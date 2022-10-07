@@ -22,6 +22,13 @@ class UserController extends Controller
             'password'=>$request->password
         ]);
 
+        if ($request->phone_number){
+            $user->phones()->create([
+                'phone_number'=>$request->phone_number,
+                'whatsapp' => $request->whatsapp
+            ]);
+        }
+
         return response()->json($user, 201);
     }
 
@@ -35,21 +42,18 @@ class UserController extends Controller
         return $user;
     }
 
-
+    //Atualiza um usuário, recebe pârametros opcionais, e irá mudar somente o que receber
     public function update(User $user,Request $request)
     {
-        $user->fill([
-            'name' =>$request->name,
-            'email' =>$request->email,
-            'password'=>$request->password
-        ]);
+        $user->fill($request->all());
         $user->save();
         return $user;
     }
 
-
-    public function destroy($id)
+    //exclui um usuário
+    public function destroy($user)
     {
-        //
+        User::destroy($user);
+        return response()->noContent();
     }
 }
