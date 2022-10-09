@@ -10,4 +10,9 @@ class State extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'initials'];
+
+    public function city()
+    {
+        return $this->hasMany(City::class);
+    }
 }

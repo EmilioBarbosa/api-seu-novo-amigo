@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('states', function (Blueprint $table) {
             $table->id();
             $table->string('name', 20);
-            $table->char('initials', 2);
+            $table->char('short_name', 2);
             $table->timestamps();
         });
     }
