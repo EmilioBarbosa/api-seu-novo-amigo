@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Session\Store;
 
 class UserController extends Controller
 {
@@ -14,18 +16,19 @@ class UserController extends Controller
     }
 
     //Salva um usuário, recebe como parâmetro nome, email e senha
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
         $user = User::create([
             'name' =>$request->name,
             'email' =>$request->email,
+            'description'=>$request->description,
             'password'=>$request->password
         ]);
 
         if ($request->phone_number){
             $user->phones()->create([
                 'phone_number'=>$request->phone_number,
-                'whatsapp' => $request->whatsapp
+                'whatsapp' => $request->phone_number_whatsapp
             ]);
         }
 
