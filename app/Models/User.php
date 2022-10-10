@@ -43,10 +43,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    //retorna os números de telefone desse usuário
+    /**
+     * relação para retornar os telefones desse usuário
+     */
     public function phones()
     {
         return $this->hasMany(PhoneNumber::class);
+    }
+
+
+    /**
+     * relação para retornar o endereço desse usuário
+     */
+    public function address()
+    {
+        return $this->hasOne(Address::class);
     }
 
 }

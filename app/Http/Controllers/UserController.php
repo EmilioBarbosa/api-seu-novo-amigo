@@ -15,7 +15,11 @@ class UserController extends Controller
         return User::all();
     }
 
-    //Salva um usuário, recebe como parâmetro nome, email e senha
+    /**
+     * @param StoreUserRequest $request
+     * Função para criar um usuário
+     * Retorna o usuário criado
+     */
     public function store(StoreUserRequest $request)
     {
         $user = User::create([
@@ -25,20 +29,30 @@ class UserController extends Controller
             'password'=>$request->password
         ]);
 
-        if ($request->phone_number){
-            $user->phones()->create([
-                'phone_number'=>$request->phone_number,
-                'whatsapp' => $request->phone_number_whatsapp
-            ]);
-        }
+        $user->phones()->create([
+            'phone_number'=>$request->phone_number,
+            'whatsapp' => $request->phone_number_whatsapp
+        ]);
 
-        return response()->json($user, 201);
+        $user->address()->create([
+            'street' => $request->street,
+            'neighborhood' => $request->neighborhood,
+            'city_id' => $request->city_id
+        ]);
+
+        $returnUser = User::with('phones', 'address.city.state')->find($user->id);
+
+        return response()->json($returnUser, 201);
     }
 
-    //Retorna 1 usuário, com seus números de telefones, recebe id do usuário como parâmetro
+    /**
+     * @param int $user
+     * Função para exibir um usuário específico
+     * Retorna o usuário
+     */
     public function show(int $user)
     {
-        $user = User::with('phones')->find($user);
+        $user = User::with('phones', 'address.city.state')->find($user);
         if ($user === null){
             return response()->json(['message'=> 'usuário não encontrado'], 404);
         }
@@ -46,11 +60,28 @@ class UserController extends Controller
     }
 
     //Atualiza um usuário, recebe pârametros opcionais, e irá mudar somente o que receber
+    //fazer o update com os dados que vierem no request
     public function update(User $user,Request $request)
     {
-        $user->fill($request->all());
-        $user->save();
-        return $user;
+        $userData = $request->except(['phone_number', 'phone_number_whatsapp', 'street', 'neighborhood', 'city_id']);
+
+        return $userData;
+
+        $user->fill($userData);
+
+        $user->phones()->update([
+            'phone_number' => $request->phone_number,
+            'whatsapp' => $request->phone_number_whatsapp
+        ]);
+
+        $user->address()->update([
+            'street' => $request->street,
+            'neighborhood' => $request->neighborhood,
+            'city_id' => $request->city_id
+        ]);
+
+
+        return('ok');
     }
 
     //exclui um usuário

@@ -29,7 +29,10 @@ class StoreUserRequest extends FormRequest
             'description' => 'nullable|max:64',
             'password' => 'required|min:8',
             'phone_number' => 'required|max:16|min:13',
-            'phone_number_whatsapp' => 'required|boolean'
+            'phone_number_whatsapp' => 'required|boolean',
+            'street' => 'required',
+            'neighborhood' => 'required',
+            'city_id' => 'required|max:2'
         ];
     }
 
@@ -46,7 +49,11 @@ class StoreUserRequest extends FormRequest
             'phone_number.max' => 'o número do telefone deve ter no máximo 16 caracteres',
             'phone_number.min' => 'o número de telefone deve ter no mínimo 13 caracteres',
             'phone_number_whatsapp.required' => 'o campo para informar se o telefone é whatsapp é obrigatório',
-            'phone_number_whatsapp.boolean' => 'valor inválido'
+            'phone_number_whatsapp.boolean' => 'valor inválido',
+            'street.required' => 'o campo rua é obrigatório',
+            'neighborhood' => 'o campo bairro é obrigatório',
+            'city_id.required' => 'o id da cidade é obrigatório',
+            'city_id.max' => 'o id da cidade pode ter no máximo 2 caracteres'
         ];
     }
 }
