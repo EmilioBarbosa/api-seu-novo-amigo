@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Session\Store;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -61,13 +63,13 @@ class UserController extends Controller
 
     //Atualiza um usuário, recebe pârametros opcionais, e irá mudar somente o que receber
     //fazer o update com os dados que vierem no request
-    public function update(User $user,Request $request)
+    public function update(User $user, UpdateUserRequest $request)
     {
-        $userData = $request->except(['phone_number', 'phone_number_whatsapp', 'street', 'neighborhood', 'city_id']);
-
-        return $userData;
-
-        $user->fill($userData);
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'description' => $request->description,
+        ]);
 
         $user->phones()->update([
             'phone_number' => $request->phone_number,
@@ -80,8 +82,9 @@ class UserController extends Controller
             'city_id' => $request->city_id
         ]);
 
+        $returnUser = User::with('phones', 'address.city.state')->find($user->id);
 
-        return('ok');
+        return response()->json($returnUser, 201);
     }
 
     //exclui um usuário
