@@ -13,11 +13,10 @@ class UserController extends Controller
 {
     /**
      * Função para retornar todos os usuários
-     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function index()
     {
-        return User::all();
+        return response()->json(User::all());
     }
 
     /**
@@ -59,9 +58,9 @@ class UserController extends Controller
     {
         $user = User::with('phones', 'address.city.state')->find($user);
         if ($user === null){
-            return response()->json(['message'=> 'usuário não encontrado'], 404);
+            return response()->json(['message'=> 'Usuário não encontrado'], 404);
         }
-        return $user;
+        return response()->json($user);
     }
 
     /**
@@ -90,7 +89,7 @@ class UserController extends Controller
 
         $returnUser = User::with('phones', 'address.city.state')->find($user->id);
 
-        return response()->json($returnUser, 201);
+        return response()->json($returnUser);
     }
 
     /**
