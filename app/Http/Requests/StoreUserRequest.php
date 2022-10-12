@@ -28,11 +28,11 @@ class StoreUserRequest extends FormRequest
             'email' => 'required|unique:App\Models\User|email:rfc',
             'description' => 'nullable|max:64',
             'password' => 'required|min:8',
-            'phone_number' => 'required|max:16|min:13',
+            'phone_number' => 'required|max:11|min:10',
             'phone_number_whatsapp' => 'required|boolean',
             'street' => 'required',
             'neighborhood' => 'required',
-            'city_id' => 'required|max:2'
+            'city_id' => 'required'
         ];
     }
 
@@ -47,14 +47,13 @@ class StoreUserRequest extends FormRequest
             'password.required' => 'O campo senha é obrigatório',
             'password.min' => 'A senha precisa ser de no mínimo 8 caracteres',
             'phone_number.required' => 'O número de telefone é obrigatório para cadastrar o usuário',
-            'phone_number.max' => 'O número do telefone deve ter no máximo 16 caracteres',
-            'phone_number.min' => 'O número de telefone deve ter no mínimo 13 caracteres',
+            'phone_number.max' => 'O número do telefone deve ter no máximo 11 caracteres',
+            'phone_number.min' => 'O número de telefone deve ter no mínimo 10 caracteres',
             'phone_number_whatsapp.required' => 'O campo para informar se o telefone é whatsapp é obrigatório',
             'phone_number_whatsapp.boolean' => 'Valor inválido',
             'street.required' => 'O campo rua é obrigatório',
             'neighborhood' => 'O campo bairro é obrigatório',
-            'city_id.required' => 'O id da cidade é obrigatório',
-            'city_id.max' => 'O id da cidade pode ter no máximo 2 caracteres'
+            'city_id.required' => 'O id da cidade é obrigatório'
         ];
     }
 }

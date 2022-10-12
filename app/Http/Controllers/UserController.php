@@ -11,7 +11,10 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    //Retorna todos os usuários
+    /**
+     * Função para retornar todos os usuários
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public function index()
     {
         return User::all();
@@ -61,8 +64,11 @@ class UserController extends Controller
         return $user;
     }
 
-    //Atualiza um usuário, recebe pârametros opcionais, e irá mudar somente o que receber
-    //fazer o update com os dados que vierem no request
+    /**
+     * @param UpdateUserRequest $request
+     * Função para editar um usuário
+     * Retorna o usuário editado
+     */
     public function update(User $user, UpdateUserRequest $request)
     {
         $user->update([
@@ -87,8 +93,12 @@ class UserController extends Controller
         return response()->json($returnUser, 201);
     }
 
-    //exclui um usuário
-    public function destroy($user)
+    /**
+     * @param int $user
+     * Função para excluir um usuário
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(int $user)
     {
         User::destroy($user);
         return response()->noContent();
