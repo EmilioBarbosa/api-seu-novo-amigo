@@ -51,7 +51,6 @@ class User extends Authenticatable
         return $this->hasMany(PhoneNumber::class);
     }
 
-
     /**
      * relação para retornar o endereço desse usuário
      */
