@@ -2,56 +2,102 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Session\Store;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    //Retorna todos os usuários
+    /**
+     * Função para retornar todos os usuários
+     */
     public function index()
     {
-        return User::all();
+        return response()->json(User::all());
     }
 
-    //Salva um usuário, recebe como parâmetro nome, email e senha
-    public function store(Request $request)
+    /**
+     * @param StoreUserRequest $request
+     * Função para criar um usuário
+     * Retorna o usuário criado
+     */
+    public function store(StoreUserRequest $request)
     {
         $user = User::create([
             'name' =>$request->name,
             'email' =>$request->email,
+            'description'=>$request->description,
             'password'=>$request->password
         ]);
 
-        if ($request->phone_number){
-            $user->phones()->create([
-                'phone_number'=>$request->phone_number,
-                'whatsapp' => $request->whatsapp
-            ]);
-        }
+        $user->phones()->create([
+            'phone_number'=>$request->phone_number,
+            'whatsapp' => $request->phone_number_whatsapp
+        ]);
 
-        return response()->json($user, 201);
+        $user->address()->create([
+            'street' => $request->street,
+            'neighborhood' => $request->neighborhood,
+            'city_id' => $request->city_id
+        ]);
+
+        $returnUser = User::with('phones', 'address.city.state')->find($user->id);
+
+        return response()->json($returnUser, 201);
     }
 
-    //Retorna 1 usuário, com seus números de telefones, recebe id do usuário como parâmetro
+    /**
+     * @param int $user
+     * Função para exibir um usuário específico
+     * Retorna o usuário
+     */
     public function show(int $user)
     {
-        $user = User::with('phones')->find($user);
+        $user = User::with('phones', 'address.city.state')->find($user);
         if ($user === null){
-            return response()->json(['message'=> 'usuário não encontrado'], 404);
+            return response()->json(['message'=> 'Usuário não encontrado'], 404);
         }
-        return $user;
+        return response()->json($user);
     }
 
-    //Atualiza um usuário, recebe pârametros opcionais, e irá mudar somente o que receber
-    public function update(User $user,Request $request)
+    /**
+     * @param UpdateUserRequest $request
+     * Função para editar um usuário
+     * Retorna o usuário editado
+     */
+    public function update(User $user, UpdateUserRequest $request)
     {
-        $user->fill($request->all());
-        $user->save();
-        return $user;
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'description' => $request->description,
+        ]);
+
+        $user->phones()->update([
+            'phone_number' => $request->phone_number,
+            'whatsapp' => $request->phone_number_whatsapp
+        ]);
+
+        $user->address()->update([
+            'street' => $request->street,
+            'neighborhood' => $request->neighborhood,
+            'city_id' => $request->city_id
+        ]);
+
+        $returnUser = User::with('phones', 'address.city.state')->find($user->id);
+
+        return response()->json($returnUser);
     }
 
-    //exclui um usuário
-    public function destroy($user)
+    /**
+     * @param int $user
+     * Função para excluir um usuário
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(int $user)
     {
         User::destroy($user);
         return response()->noContent();

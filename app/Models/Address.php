@@ -11,6 +11,14 @@ class Address extends Model
 
     protected $fillable = ['street', 'neighborhood', 'city_id'];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * relação para retornar a cidade desse endereço
+     */
     public function city()
     {
         return $this->belongsTo(City::class);
