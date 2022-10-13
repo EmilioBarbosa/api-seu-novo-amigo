@@ -1,4 +1,4 @@
-<p align="center">![logo_seu_novo_amigo_sem_fundo](https://user-images.githubusercontent.com/84550220/195476916-562b06c6-d6e3-4e21-88da-cf016a9b34b2.png)
+<p align="center">
 </p>
 
 <p align="center">
