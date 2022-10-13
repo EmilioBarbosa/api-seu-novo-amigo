@@ -7,6 +7,8 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Session\Store;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
@@ -30,7 +32,7 @@ class UserController extends Controller
             'name' =>$request->name,
             'email' =>$request->email,
             'description'=>$request->description,
-            'password'=>$request->password
+            'password'=> Hash::make($request->password),
         ]);
 
         $user->phones()->create([
@@ -101,5 +103,21 @@ class UserController extends Controller
     {
         User::destroy($user);
         return response()->noContent();
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->all();
+        //faz a verificação se o usuário existe e suas credenciais estão corretas
+        if (Auth::attempt($credentials) === false){
+            return response()->json(['message: Não autorizado'], 401);
+        }
+        $user = Auth::user();
+        //deleta o token anterior antes de criar o novo
+        $user->tokens()->delete();
+        //gera um token para o usuário
+        $token = $user->createToken('token');
+
+        return response()->json($token->plainTextToken);
     }
 }
