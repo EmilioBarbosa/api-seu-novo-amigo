@@ -2,9 +2,9 @@
     <img src="logo_seu_novo_amigo_sem_fundo.png" style="width: 250px;"/>
 </p>
 
-<p align="center">
-   ## Seu Novo Amigo
-</p>
+<h3 align="center">
+    Seu Novo Amigo
+</h3>
 
 ## About Laravel
 
