@@ -1,6 +1,6 @@
 <p align="center">
+    <img src="logo_seu_novo_amigo_sem_fundo.png"/>
 </p>
-<img src="logo_seu_novo_amigo_sem_fundo.png"/>
 
 <p align="center">
 <a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
