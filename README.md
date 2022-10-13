@@ -8,7 +8,9 @@
 
 ## Sobre o projeto
 
-Decidi fazer esse projeto para um trabalho final de uma disciplina da minha faculdade, com esse projeto procurei me desenvolver tecnicamente, e principalmente, ajudar os animais em situação de rua.
+Decidi fazer esse projeto para um trabalho final de uma disciplina da minha faculdade, com esse projeto procurei me desenvolver tecnicamente, e principalmente, ajudar os animais em situação de rua. 
+
+Este repositório contém o código fonte de uma API REST para uma plataforma de adoções de animais.
 
 ## Features
 
@@ -21,38 +23,23 @@ Decidi fazer esse projeto para um trabalho final de uma disciplina da minha facu
  - <a href="https://www.php.net/downloads.php" _target="blank">PHP ^8.0.2</a> 
  - <a href="https://getcomposer.org/download/" _target="blank">Composer</a> 
 
-## Laravel Sponsors
+## Configuração
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- Clone este repositório
+- Entre na pasta do projeto e instale as depêndencias com o comando: Composer install
+- Copie o arquivo .env.example, cole na raiz do projeto e renomeie para .env
+- Edite o arquivo .env com as suas variáveis de ambiente
+- Crie as tabelas no banco de dados utilizando o comando: php artisan migrate
+- Inicie o servidor utilizando o comando: php artisan serve
+- Popular a tabela states com o sql do arquivo: query_estados
+- Popular a tabela cities com o sql do arquivo: query_cidades
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Rotas da API
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+|Verbo http  | Rota | Parâmetros | Função
+|--|--|--|--
+|GET| /users/{user} | id do usuário | Retornar um usuário 
+|POST| /users | name, email, description, password, phone_number, phone_number_whatsapp, street, neighborhood, city_id| Cadastrar um usuário
+|PUT| /users/{user}| id do usuário , name, email, description, password, phone_number, phone_number_whatsapp, street, neighborhood, city_id |Editar um usuário
+|DELETE| /users/{user}|id do usuário | Excluir o usuário
