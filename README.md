@@ -13,19 +13,13 @@ Decidi fazer esse projeto para um trabalho final de uma disciplina da minha facu
 ## Features
 
 - Cadastro de usuários.
-- Cadastros de animais.
+- Cadastro de animais para adoção.
 - Autenticação.
 
+## Requisitos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+ - <a href="https://www.php.net/downloads.php" _target="blank">PHP ^8.0.2</a> 
+ - <a href="https://getcomposer.org/download/" _target="blank">Composer</a> 
 
 ## Laravel Sponsors
 
