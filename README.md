@@ -14,9 +14,9 @@ Este repositório contém o código fonte de uma API REST para uma plataforma de
 
 ## Features
 
-- Cadastro de usuários.
-- Cadastro de animais para adoção.
-- Autenticação.
+- Cadastro de usuários(Ok).
+- Cadastro de animais para adoção(Próxima implementação).
+- Autenticação(Próxima implementação).
 
 ## Requisitos
 
