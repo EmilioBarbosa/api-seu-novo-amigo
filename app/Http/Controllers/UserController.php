@@ -8,11 +8,18 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        //Middleware não irá verificar o token na rota show e login
+        $this->middleware('auth:sanctum')->except('show', 'login');
+    }
     /**
      * Função para retornar todos os usuários
      */
@@ -99,8 +106,21 @@ class UserController extends Controller
      * Função para excluir um usuário
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $user)
+    public function destroy(User $user, Request $request)
     {
+        $user_token = DB::table('personal_access_tokens')->where('tokenable_id', $user->id)->get();
+        $user_token = $user_token[0]->token;
+        $header_token =  $request->header('authorization');
+        $header_token = substr($header_token, 11);
+        return PersonalAccessToken::findToken($user_token);
+        return [$user->tokens, $user_token, $header_token];
+
+        if (Hash::check($user_token, $header_token)){
+            return 'igual';
+        }
+        else{
+            return 'diferente';
+        }
         User::destroy($user);
         return response()->noContent();
     }
@@ -110,7 +130,7 @@ class UserController extends Controller
         $credentials = $request->all();
         //faz a verificação se o usuário existe e suas credenciais estão corretas
         if (Auth::attempt($credentials) === false){
-            return response()->json(['message: Não autorizado'], 401);
+            return response()->json(['message' => 'Não autorizado'], 401);
         }
         $user = Auth::user();
         //deleta o token anterior antes de criar o novo
@@ -118,6 +138,6 @@ class UserController extends Controller
         //gera um token para o usuário
         $token = $user->createToken('token');
 
-        return response()->json($token->plainTextToken);
+        return response()->json(["token" => $token->plainTextToken]);
     }
 }

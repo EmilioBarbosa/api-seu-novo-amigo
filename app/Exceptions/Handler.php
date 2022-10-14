@@ -51,7 +51,7 @@ class Handler extends ExceptionHandler
         //Caso ocorra uma Exception de autenticação, irá lançar esse exception, sobrescrevendo a padrão
         $this->renderable(function (AuthenticationException $e, $request) {
             if ($request->is('api/*')) {
-                return response()->json(['message: Não autorizado'], 401);
+                return response()->json(['message' => 'Não autorizado'], 401);
             }
         });
     }
