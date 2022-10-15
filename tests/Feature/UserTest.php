@@ -9,6 +9,7 @@ use App\Models\State;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -24,9 +25,12 @@ class UserTest extends TestCase
         parent::setUp();
         $this->state = State::factory()->create();
         $this->city = City::factory()->create();
-        $this->user = User::factory()
+        $this->user = Sanctum::actingAs(
+            User::factory()
             ->has(PhoneNumber::factory(), 'phones')
-            ->has(Address::factory(), 'address')->create();
+            ->has(Address::factory(), 'address')->create(),
+            ['*']
+        );
     }
 
 
@@ -46,7 +50,9 @@ class UserTest extends TestCase
         $response = $this->postJson(route('users.store'), [
             'name' => 'emilio barbosa',
             'email' => 'emilio@email.com',
+            'email_confirmation' => 'emilio@email.com',
             'password' => '12345678',
+            'password_confirmation' => '12345678',
             'phone_number' => '48984189420',
             'phone_number_whatsapp' => 1,
             'street' => 'rua jaime bianchini',

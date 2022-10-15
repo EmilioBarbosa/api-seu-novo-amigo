@@ -18,7 +18,7 @@ class UserController extends Controller
     public function __construct()
     {
         //Middleware não irá verificar o token na rota show e login
-        $this->middleware('auth:sanctum')->except('show', 'login');
+        $this->middleware('auth:sanctum')->except('show', 'login', 'store');
     }
     /**
      * Função para retornar todos os usuários
@@ -103,26 +103,24 @@ class UserController extends Controller
 
     /**
      * @param int $user
+     * @param Request $request
      * Função para excluir um usuário
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
-    public function destroy(User $user, Request $request)
+    public function destroy(int $user, Request $request)
     {
-        $user_token = DB::table('personal_access_tokens')->where('tokenable_id', $user->id)->get();
-        $user_token = $user_token[0]->token;
+        //Pega o token pelo header
         $header_token =  $request->header('authorization');
-        $header_token = substr($header_token, 11);
-        return PersonalAccessToken::findToken($user_token);
-        return [$user->tokens, $user_token, $header_token];
-
-        if (Hash::check($user_token, $header_token)){
-            return 'igual';
+        $header_token = str_replace('Bearer ', '', $header_token);
+        //Procura a model do token
+        $token = PersonalAccessToken::findToken($header_token);
+        //se o id do usuário desse token for igual ao id do parâmetro da requisição ele deleta o usuário e o token
+        if($token->tokenable_id === $user){
+            $token->delete();
+            User::destroy($user);
+            return response()->noContent();
         }
-        else{
-            return 'diferente';
-        }
-        User::destroy($user);
-        return response()->noContent();
+        return response()->json(['message' => 'Não autorizado'], 401);
     }
 
     public function login(Request $request)
