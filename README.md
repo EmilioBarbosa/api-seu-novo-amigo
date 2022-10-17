@@ -16,7 +16,7 @@ Este repositório contém o código fonte de uma API REST para uma plataforma de
 
 - Cadastro de usuários(Ok).
 - Cadastro de animais para adoção(Próxima implementação).
-- Autenticação(Próxima implementação).
+- Autenticação(Ok).
 
 ## Requisitos
 
@@ -41,5 +41,5 @@ Este repositório contém o código fonte de uma API REST para uma plataforma de
 |--|--|--|--
 |GET| /users/{user} | id do usuário | Retornar um usuário 
 |POST| /users | name, email, description, password, phone_number, phone_number_whatsapp, street, neighborhood, city_id| Cadastrar um usuário
-|PUT| /users/{user}| id do usuário , name, email, description, password, phone_number, phone_number_whatsapp, street, neighborhood, city_id |Editar um usuário
-|DELETE| /users/{user}|id do usuário | Excluir o usuário
+|PUT| /users/{user}| id do usuário , name, email, description, password, phone_number, phone_number_whatsapp, street, neighborhood, city_id, token(pelo header, ex: authorization: token) |Editar um usuário
+|DELETE| /users/{user}|id do usuário, token(pelo header, ex: authorization: token) | Excluir o usuário
