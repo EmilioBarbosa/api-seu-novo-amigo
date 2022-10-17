@@ -7,10 +7,19 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Session\Store;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        //Middleware não irá verificar o token na rota show e login
+        $this->middleware('auth:sanctum')->except('show', 'login', 'store');
+    }
     /**
      * Função para retornar todos os usuários
      */
@@ -30,7 +39,7 @@ class UserController extends Controller
             'name' =>$request->name,
             'email' =>$request->email,
             'description'=>$request->description,
-            'password'=>$request->password
+            'password'=> Hash::make($request->password),
         ]);
 
         $user->phones()->create([
@@ -94,12 +103,39 @@ class UserController extends Controller
 
     /**
      * @param int $user
+     * @param Request $request
      * Função para excluir um usuário
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
-    public function destroy(int $user)
+    public function destroy(int $user, Request $request)
     {
-        User::destroy($user);
-        return response()->noContent();
+        //Pega o token pelo header
+        $header_token =  $request->header('authorization');
+        $header_token = str_replace('Bearer ', '', $header_token);
+        //Procura a model do token
+        $token = PersonalAccessToken::findToken($header_token);
+        //se o id do usuário desse token for igual ao id do parâmetro da requisição ele deleta o usuário e o token
+        if($token->tokenable_id === $user){
+            $token->delete();
+            User::destroy($user);
+            return response()->noContent();
+        }
+        return response()->json(['message' => 'Não autorizado'], 401);
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->all();
+        //faz a verificação se o usuário existe e suas credenciais estão corretas
+        if (Auth::attempt($credentials) === false){
+            return response()->json(['message' => 'Não autorizado'], 401);
+        }
+        $user = Auth::user();
+        //deleta o token anterior antes de criar o novo
+        $user->tokens()->delete();
+        //gera um token para o usuário
+        $token = $user->createToken('token');
+
+        return response()->json(["token" => $token->plainTextToken]);
     }
 }
