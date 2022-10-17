@@ -43,3 +43,19 @@ Este repositório contém o código fonte de uma API REST para uma plataforma de
 |POST| /users | name, email, email_confirmation, description, password, password_confirmation, phone_number, phone_number_whatsapp, street, neighborhood, city_id| Cadastrar um usuário
 |PUT| /users/{user}| id do usuário , name, email, description, password, phone_number, phone_number_whatsapp, street, neighborhood, city_id, token(pelo header, ex: authorization: token) |Editar um usuário
 |DELETE| /users/{user}|id do usuário, token(pelo header, ex: authorization: token) | Excluir o usuário
+
+
+### Tipos dos parâmetros
+- Id do usuário = int
+- name = string, obrigatório
+- email = string, obrigatório
+- email_confirmation = string, obrigatório
+- description = string, nullable
+- password = string, minímo 8 caracteres, obrigatório
+- password_confirmation = string, obrigatório
+- phone_number = string, obrigatório, mínimo 10 caracteres, máximo 11 caracteres
+- phone_number_whatsapp = boolean, obrigatório - campo para informar se o telefone é para whatsapp
+- street = string, obrigatório
+- neighborhood = string, obrigatório
+- city_id = string, obrigatório - referência o campo id da tabela cities
+
