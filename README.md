@@ -40,6 +40,6 @@ Este repositório contém o código fonte de uma API REST para uma plataforma de
 |Verbo http  | Rota | Parâmetros | Função
 |--|--|--|--
 |GET| /users/{user} | id do usuário | Retornar um usuário 
-|POST| /users | name, email, description, password, phone_number, phone_number_whatsapp, street, neighborhood, city_id| Cadastrar um usuário
+|POST| /users | name, email, email_confirmation, description, password, password_confirmation, phone_number, phone_number_whatsapp, street, neighborhood, city_id| Cadastrar um usuário
 |PUT| /users/{user}| id do usuário , name, email, description, password, phone_number, phone_number_whatsapp, street, neighborhood, city_id, token(pelo header, ex: authorization: token) |Editar um usuário
 |DELETE| /users/{user}|id do usuário, token(pelo header, ex: authorization: token) | Excluir o usuário
