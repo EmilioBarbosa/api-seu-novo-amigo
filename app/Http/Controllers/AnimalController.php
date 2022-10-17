@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class PhoneNumberController extends Controller
+class AnimalController extends Controller
 {
     /**
      * Display a listing of the resource.
