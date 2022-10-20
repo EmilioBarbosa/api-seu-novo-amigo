@@ -30,8 +30,9 @@ Este repositório contém o código fonte de uma API REST para uma plataforma de
 - Copie o arquivo .env.example, cole na raiz do projeto e renomeie para .env
 - Edite o arquivo .env com as suas variáveis de ambiente
 - Crie as tabelas no banco de dados utilizando o comando: php artisan migrate
-- Inicie o servidor utilizando o comando: php artisan serve
 - Rode os seeders para popular o banco de dados com as informações necessárias, com o comando: php artisan db:seed
+- Inicie o servidor utilizando o comando: php artisan serve
+
 
 
 ### Rotas da API
