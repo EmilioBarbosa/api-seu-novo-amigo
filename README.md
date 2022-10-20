@@ -31,8 +31,7 @@ Este repositório contém o código fonte de uma API REST para uma plataforma de
 - Edite o arquivo .env com as suas variáveis de ambiente
 - Crie as tabelas no banco de dados utilizando o comando: php artisan migrate
 - Inicie o servidor utilizando o comando: php artisan serve
-- Popular a tabela states com o sql do arquivo: query_estados
-- Popular a tabela cities com o sql do arquivo: query_cidades
+- Rode os seeders para popular o banco de dados com as informações necessárias, com o comando: php artisan db:seed
 
 
 ### Rotas da API
