@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
             $table->string('name', 64);
+            $table->string('ibge_code', 20)->nullable();
             $table->foreignId('state_id')->constrained();
-            $table->timestamps();
         });
     }
 

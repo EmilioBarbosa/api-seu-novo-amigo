@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,4 @@ Route::apiResource('/users', UserController::class);
 /**
  * Rotas para cadastrar,excluir, editar e ver os animais para adoção
  */
-Route::apiResource('/users.animals', UserController::class);
+Route::apiResource('/animals', AnimalController::class);

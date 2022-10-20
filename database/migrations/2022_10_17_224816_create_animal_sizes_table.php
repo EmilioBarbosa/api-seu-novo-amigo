@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('animal_sizes', function (Blueprint $table) {
             $table->id();
             $table->string('name', 10);
-            $table->timestamps();
         });
     }
 
