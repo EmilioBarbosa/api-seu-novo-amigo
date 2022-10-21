@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAnimalRequest;
+use App\Http\Requests\UpdateAnimalRequest;
 use App\Models\Animal;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -19,9 +21,9 @@ class AnimalController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Mostra todos os animais para adoção
      *
-     * @return \Illuminate\Http\Response
+     * @return Animal
      */
     public function index()
     {
@@ -29,8 +31,9 @@ class AnimalController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
+     * Adiciona um animal
+     * @param StoreAnimalRequest $request
+     * @return JsonResponse
      */
     public function store(StoreAnimalRequest $request)
     {
@@ -59,8 +62,9 @@ class AnimalController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Mostra um animal específico.
      * @param  int  $id
+     * @return JsonResponse
      */
     public function show(int $id)
     {
@@ -72,35 +76,50 @@ class AnimalController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Atualiza um animal
+     * @param UpdateAnimalRequest $request
+     * @param Animal $animal
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateAnimalRequest $request, Animal $animal)
     {
-        //
+        $animal->update([
+            'name' => $request->name,
+            'breed' => $request->breed,
+            'sex' => $request->sex,
+            'weight' => $request->weight,
+            'age' => $request->age,
+            'picture_1' => $request->picture_1,
+            'picture_2' => $request->picture_2,
+            'description' => $request->description,
+            'adopted' => $request->adopted,
+            'animal_size_id' => $request->animal_size_id,
+            'species_id' => $request->species_id,
+        ]);
+
+        $returnAnimal = Animal::with('owner.address.city.state', 'animalSize', 'species')->find($animal->id);
+
+        return response()->json($returnAnimal);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
+     * Deleta um animal
+     * @param  Animal  $animal
+     * @param Request $request
      */
-    public function destroy(int $id, Request $request)
+    public function destroy(Animal $animal, Request $request)
     {
-//        //Pega o token pelo header
-//        $header_token =  $request->header('authorization');
-//        $header_token = str_replace('Bearer ', '', $header_token);
-//        //Procura a model do token
-//        $token = PersonalAccessToken::findToken($header_token);
-//        //se o id do usuário desse token for igual ao id do parâmetro da requisição ele deleta o usuário e o token
-//        if($token->tokenable_id === $user){
-//            $token->delete();
-//            User::destroy($user);
-//            return response()->noContent();
-//        }
-//        return response()->json(['message' => 'Não autorizado'], 401);
+        $ownerId = $animal->owner->id;
+        //Pega o token pelo header
+        $header_token =  $request->header('authorization');
+        $header_token = str_replace('Bearer ', '', $header_token);
+        //Procura a model do token
+        $token = PersonalAccessToken::findToken($header_token);
+        //se o id do usuário desse token for igual ao id do dono do animal ele deleta o animal
+        if($token->tokenable_id === $ownerId){
+            Animal::destroy($animal->id);
+            return response()->noContent();
+        }
+        return response()->json(['message' => 'Não autorizado'], 401);
     }
 }
