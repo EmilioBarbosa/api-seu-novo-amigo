@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\OnlyOwnerCanUpdateAnimal;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateAnimalRequest extends FormRequest
@@ -23,6 +24,9 @@ class UpdateAnimalRequest extends FormRequest
      */
     public function rules()
     {
+        $animal = $this->animal;
+        $user_token = str_replace('Bearer ', '', $this->header('authorization'));
+
         return [
             'name' => 'required',
             'breed' => 'required',
@@ -35,7 +39,7 @@ class UpdateAnimalRequest extends FormRequest
             'adopted' => 'required|boolean',
             'animal_size_id' => 'required',
             'species_id' => 'required',
-            'user_id' => 'required',
+            'user_id' => ['required', new OnlyOwnerCanUpdateAnimal($animal, $user_token)],
         ];
     }
 
