@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use  Database\Seeders\DatabaseSeeder;
 
 return new class extends Migration
 {
@@ -16,8 +17,7 @@ return new class extends Migration
         Schema::create('states', function (Blueprint $table) {
             $table->id();
             $table->string('name', 20);
-            $table->char('short_name', 2);
-            $table->timestamps();
+            $table->char('abbreviation', 2);
         });
     }
 

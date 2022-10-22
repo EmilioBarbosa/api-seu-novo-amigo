@@ -59,4 +59,13 @@ class User extends Authenticatable
         return $this->hasOne(Address::class);
     }
 
+    /**
+     * relação para retornar os animais que o usuário colocou para adoção
+     */
+    public function animals()
+    {
+        return $this->hasMany(Animal::class);
+    }
+
+
 }

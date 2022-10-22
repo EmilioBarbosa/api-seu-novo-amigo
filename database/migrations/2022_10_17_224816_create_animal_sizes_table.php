@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cities', function (Blueprint $table) {
+        Schema::create('animal_sizes', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 64);
-            $table->string('ibge_code', 20)->nullable();
-            $table->foreignId('state_id')->constrained();
+            $table->string('name', 10);
         });
     }
 
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cities');
+        Schema::dropIfExists('animal_sizes');
     }
 };
