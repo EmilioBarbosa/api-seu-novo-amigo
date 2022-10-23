@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
+use App\Rules\UserCanOnlyUpdateHimself;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -10,38 +11,39 @@ use Illuminate\Validation\Rule;
 class UpdateUserRequest extends FormRequest
 {
 
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
+    protected $stopOnFirstFailure = true;
+
+
     public function authorize()
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
+    public function all($keys = null)
+    {
+        $data = parent::all();
+        $data['id'] = $this->route('user')->id;
+
+        return $data;
+    }
+
     public function rules()
     {
-        $user = $this->route('user');
-
+        $user_token = str_replace('Bearer ', '', $this->header('authorization'));
         return [
+            'id' => [new UserCanOnlyUpdateHimself($this->user, $user_token)],
             'name' => 'required',
             'email' => [
                 'required',
                 'email:rfc',
-                Rule::unique('users')->ignore($user->id, 'id'),
+                Rule::unique('users')->ignore($this->user->id, 'id'),
             ],
             'description' => 'nullable|max:64',
             'phone_number' => 'required|max:11|min:10',
             'phone_number_whatsapp' => 'required|boolean',
             'street' => 'required',
             'neighborhood' => 'required',
-            'city_id' => 'required'
+            'city_id' => 'required',
         ];
     }
 
