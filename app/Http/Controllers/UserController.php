@@ -134,6 +134,6 @@ class UserController extends Controller
         //gera um token para o usuário
         $token = $user->createToken('token');
 
-        return response()->json(["token" => $token->plainTextToken]);
+        return response()->json(["id" => Auth::id(), "token" => $token->plainTextToken]);
     }
 }
