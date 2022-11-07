@@ -21,7 +21,7 @@ return new class extends Migration
             $table->float('weight', 7);
             $table->string('age', 10);
             $table->string('picture_1');
-            $table->string('picture_2');
+            $table->string('picture_2')->nullable();
             $table->string('description', 128)->nullable();
             $table->boolean('adopted');
             $table->foreignId('animal_size_id')->constrained('animal_sizes');

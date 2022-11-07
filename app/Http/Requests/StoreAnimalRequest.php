@@ -29,13 +29,14 @@ class StoreAnimalRequest extends FormRequest
             'sex' => 'required|max:1',
             'weight' => 'required|max:7',
             'age' => 'required',
-            'picture_1' => 'required',
-            'picture_2' => 'required',
             'description' => 'nullable|max:128',
             'adopted' => 'required|boolean',
             'animal_size_id' => 'required',
             'species_id' => 'required',
             'user_id' => 'required',
+            'images' => 'array',
+            'images.img1' => 'required|image',
+            'images.img2' => 'image',
         ];
     }
 
@@ -54,6 +55,10 @@ class StoreAnimalRequest extends FormRequest
             'animal_size_id.required' => 'O campo porte do animal é obrigatório',
             'species_id.required' => 'O campo espécie é obrigatório',
             'user_id.required' => 'O id do usuário é obrigatório',
+            'images.required' => 'É obrigatório utilizar ao menos uma foto para cadastrar o animal',
+            'images.img1.required' => 'É obrigatório utilizar ao menos uma foto para cadastrar o animal',
+            'images.img1.image' => 'Arquivo inválido',
+            'images.img2.image' => 'Arquivo inválido',
         ];
     }
 }

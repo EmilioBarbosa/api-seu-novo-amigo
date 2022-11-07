@@ -39,6 +39,14 @@ class AnimalController extends Controller
     {
         $user = User::find($request->user_id);
 
+        //salva as fotos do animal
+        $images = $request->file('images');
+        $imagesNames = [];
+        foreach ($images as $image){
+            $path = $image->storePublicly('/images/animals');
+            $imagesNames[] = $path;
+        }
+
         //cria o animal com o usuário encontrado
         $createAnimal = $user->animals()->create([
             'name' => $request->name,
@@ -46,8 +54,8 @@ class AnimalController extends Controller
             'sex' => $request->sex,
             'weight' => $request->weight,
             'age' => $request->age,
-            'picture_1' => $request->picture_1,
-            'picture_2' => $request->picture_2,
+            'picture_1' => $imagesNames[0],
+            'picture_2' => count($imagesNames) > 1 ? $imagesNames[1] : null,
             'description' => $request->description,
             'adopted' => $request->adopted,
             'animal_size_id' => $request->animal_size_id,
