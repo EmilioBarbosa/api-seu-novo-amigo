@@ -76,7 +76,7 @@ class AnimalController extends Controller
      */
     public function show(int $id)
     {
-        $animal = Animal::with('owner.address.city.state', 'animalSize', 'species')->find($id);
+        $animal = Animal::with('owner.address.city.state', 'owner.phones', 'animalSize', 'species')->find($id);
         if ($animal === null){
             return response()->json(['message'=> 'Animal não encontrado'], 404);
         }
