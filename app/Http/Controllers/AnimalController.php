@@ -17,7 +17,7 @@ class AnimalController extends Controller
     public function __construct()
     {
         //Middleware não irá verificar o token na rota index e show
-        $this->middleware('auth:sanctum')->except('index', 'show');
+        $this->middleware('auth:sanctum')->except('index', 'show', 'store');
     }
 
     /**
