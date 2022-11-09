@@ -27,7 +27,7 @@ class AnimalController extends Controller
      */
     public function index()
     {
-        return Animal::all();
+        return Animal::all(['id','name', 'breed', 'picture_1']);
     }
 
     /**
