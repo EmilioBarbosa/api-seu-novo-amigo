@@ -12,9 +12,11 @@ class ImageController extends Controller
      * Recebe como parametro o nome do arquivo
      * Sem o caminho
      */
-    public function getAnimalImage($image)
+    public function getAnimalImage($path)
     {
-        $image = Storage::get("/images/animals/{$image}");
-        return response($image, 200);
+        $image = Storage::get("/images/animals/{$path}");
+        $mymeType = Storage::mimeType("/images/animals/{$path}");
+
+        return response($image, 200)->header('Content-Type', $mymeType);
     }
 }
