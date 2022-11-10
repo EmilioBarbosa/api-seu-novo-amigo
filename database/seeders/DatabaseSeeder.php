@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
             CitiesTableSeeder::class,
             AnimalSizesTableSeeder::class,
             SpeciesTableSeeder::class,
-            UserTableSeed::class
         ]);
     }
 }
