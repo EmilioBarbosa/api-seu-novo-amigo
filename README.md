@@ -58,4 +58,4 @@ Este repositório contém o código fonte de uma API REST para uma plataforma de
 - street = string, obrigatório
 - neighborhood = string, obrigatório
 - city_id = string, obrigatório - referência o campo id da tabela cities
-
+.
